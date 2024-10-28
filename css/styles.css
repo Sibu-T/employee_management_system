@@ -1,0 +1,164 @@
+/* Global Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: white; /* Light background */
+    margin: 0;
+    padding: 0;
+}
+
+/* Container Styles */
+.container {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    background: #ffffff; /* White background for forms */
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Sidebar Styles */
+.sidebar {
+    width: 220px;
+    background: #003366; /* Darker blue */
+    color: #ffffff;
+    padding: 20px;
+    position: fixed;
+    height: 100%;
+    top: 0;
+    left: 0;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.sidebar h2 {
+    color: #ffffff;
+    font-size: 1.5em;
+    margin-bottom: 20px;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar li {
+    margin: 10px 0;
+}
+
+.sidebar a {
+    color: #ffffff;
+    text-decoration: none;
+    padding: 10px;
+    display: block;
+    transition: background 0.3s;
+}
+
+.sidebar a:hover {
+    background: #00509e; /* Hover effect */
+}
+
+/* Main Content Styles */
+.main-content {
+    margin-left: 240px; /* Adjust according to sidebar width */
+    padding: 20px;
+}
+
+/* Form Styles */
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+input[type="text"],
+input[type="password"] {
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #007acc; /* Blue border */
+    border-radius: 5px;
+    font-size: 16px;
+    transition: border 0.3s;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+    border-color: #00509e; /* Darker blue on focus */
+    outline: none;
+}
+
+/* Button Styles */
+button {
+    padding: 12px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 5px;
+    background: #007acc; /* Button blue */
+    color: #ffffff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+button:hover {
+    background: #00509e; /* Darker blue on hover */
+}
+
+
+
+/* Header Styles */
+h2 {
+    color: #003366; /* Dark blue */
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 100%;
+        position: relative;
+        height: auto;
+    }
+    
+    .main-content {
+        margin-left: 0;
+        padding: 20px;
+    }
+}
+.card {
+            margin: 20px;
+            border-radius: 10px; /* Rounded corners for cards */
+            transition: transform 0.3s;
+        }
+        .card:hover {
+            transform: scale(1.05); /* Hover effect for cards */
+        }
+        .card {
+            background-color: #ffffff; /* Set card background to white */
+            color: black; /* Set text color to black */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add shadow effect to cards */
+            border-radius: 8px; /* Optional: Round card corners */
+        }
+        .sidebar {
+            background-color: #007acc; /* Match sidebar color with your preference */
+            height: 100vh; /* Full height for sidebar */
+            position: fixed; /* Fix sidebar position */
+            width: 250px; /* Fixed width for sidebar */
+        }
+        .sidebar a {
+            color: white; /* Sidebar link color */
+            text-decoration: none; /* Remove underline from links */
+        }
+        .sidebar a {
+            color: white; /* Sidebar link color */
+            text-decoration: none; /* Remove underline from links */
+        }
+        
+        .sidebar a:hover {
+            text-decoration: none; /* Ensure no underline on hover */
+            color: white; 
+            border-radius: 5px; /* Add rounded corners to all links */
+        }
+        .sidebar a.active {
+            background-color: #00509e; /* Set active link background color */
+            color: white; /* Ensure text color is white */
+            border-radius: 5px; /* Add rounded corners to all links */
+        }
+  
+        
