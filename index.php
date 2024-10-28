@@ -1,4 +1,4 @@
 <?php
-header('Location: pages/login.html');
+header('Location: pages/login.html'); //Redirects to login.html
 exit;
 ?>
