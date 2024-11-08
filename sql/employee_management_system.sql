@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 08, 2024 at 10:15 PM
+-- Generation Time: Nov 08, 2024 at 11:27 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -132,7 +132,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `EmployeeID`, `Username`, `Password`, `role`) VALUES
-(0, '11111', 'User', '$2y$10$NXLHd10m7uy13/zmmj1f8.DHnX8lMBwW4WQB29jPzPlhTf/0ViQOe', 'admin');
+(1, '11111', 'User', '$2y$10$NXLHd10m7uy13/zmmj1f8.DHnX8lMBwW4WQB29jPzPlhTf/0ViQOe', 'admin');
 
 -- --------------------------------------------------------
 
@@ -186,6 +186,12 @@ ALTER TABLE `overtime`
   ADD PRIMARY KEY (`OvertimeID`);
 
 --
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `vacation`
 --
 ALTER TABLE `vacation`
@@ -212,6 +218,12 @@ ALTER TABLE `employees`
 --
 ALTER TABLE `overtime`
   MODIFY `OvertimeID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `vacation`
