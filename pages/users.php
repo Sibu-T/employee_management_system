@@ -118,7 +118,6 @@ if (isset($_SESSION['error'])) {
                             <select class="form-control" id="role" name="role" required>
                                 <option value="">Select Role</option>
                                 <option value="Admin">Admin</option>
-                                <option value="User">User</option>
                             </select>
                         </div>
                     </form>
