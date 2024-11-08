@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 24, 2024 at 07:09 AM
+-- Generation Time: Nov 08, 2024 at 10:15 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -37,7 +37,9 @@ CREATE TABLE `branch` (
 --
 
 INSERT INTO `branch` (`BranchID`, `BranchName`) VALUES
-(123, '111');
+(100, 'Manzini'),
+(101, 'Matsapha'),
+(102, 'Mbabane');
 
 -- --------------------------------------------------------
 
@@ -55,7 +57,9 @@ CREATE TABLE `departments` (
 --
 
 INSERT INTO `departments` (`DepartmentID`, `DepartmentName`) VALUES
-(234, 'Manzini');
+(123, 'Human Resources'),
+(1234, 'Information Technology'),
+(12345, 'Finance');
 
 -- --------------------------------------------------------
 
@@ -81,14 +85,11 @@ CREATE TABLE `employees` (
 --
 
 INSERT INTO `employees` (`id`, `EmployeeID`, `NationalID`, `FullName`, `Gender`, `Phone`, `Nationality`, `JobTitle`, `DepartmentID`, `BranchID`) VALUES
-(1, 'www', NULL, 'www', 'Male', 'ww', 'ww', 'www', 234, 123),
-(2, '11', NULL, '11', 'Male', '11', '11', '11', 234, 123),
-(3, 'ww', NULL, 'ww', 'Male', 'wwd', 'ww', 'wwd', 234, 123),
-(33, 'ss2', NULL, 'ss', 'Male', 'ss', 'ss', 'ss', 234, 123),
-(34, 'ss2', NULL, 'ss', 'Male', 'ss', 'ss', 'ss', 234, 123),
-(35, 'ss2', NULL, 'ss', 'Male', 'ss', 'ss', 'ss', 234, 123),
-(36, 'ss2', NULL, 'ss', 'Male', 'ss', 'ss', 'ss', 234, 123),
-(37, 'ss2', NULL, 'ss', 'Male', 'ss', 'ss', 'ss', 234, 123);
+(44, '22222', NULL, 'Sibusiso Tsabedze', 'Male', '78042796', 'Swazi', 'Systems Developer', 1234, 101),
+(45, '11111', NULL, 'HR User', 'Male', '76019204', 'Swazi', 'HR', 123, 100),
+(46, '33333', NULL, 'Nosifiso Magagula', 'Female', '79548155', 'Swazi', 'Data Analyst', 1234, 102),
+(47, '44444', NULL, 'Mhlengi Lukhele', 'Male', '78536701', 'Swazi', 'Systems Developer', 1234, 102),
+(48, '55555', NULL, 'Simphiwe Dlamini', 'Female', '76019202', 'Swazi', 'Systems Analyst', 1234, 100);
 
 -- --------------------------------------------------------
 
@@ -98,11 +99,19 @@ INSERT INTO `employees` (`id`, `EmployeeID`, `NationalID`, `FullName`, `Gender`,
 
 CREATE TABLE `overtime` (
   `OvertimeID` int(11) NOT NULL,
-  `EmployeeID` int(11) DEFAULT NULL,
+  `EmployeeID` varchar(50) DEFAULT NULL,
   `StartDate` date DEFAULT NULL,
   `NumberOfDays` int(11) DEFAULT NULL,
   `EndDate` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `overtime`
+--
+
+INSERT INTO `overtime` (`OvertimeID`, `EmployeeID`, `StartDate`, `NumberOfDays`, `EndDate`) VALUES
+(2, '22222', '2024-11-08', 1, '2024-11-09'),
+(3, '44444', '2024-11-08', 2, '2024-11-10');
 
 -- --------------------------------------------------------
 
@@ -115,7 +124,7 @@ CREATE TABLE `users` (
   `EmployeeID` varchar(50) NOT NULL,
   `Username` varchar(100) NOT NULL,
   `Password` varchar(255) NOT NULL,
-  `role` enum('admin','user') DEFAULT 'user'
+  `role` enum('admin','user') DEFAULT 'admin'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -123,7 +132,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `EmployeeID`, `Username`, `Password`, `role`) VALUES
-(1, '12345', 'test', '$2y$10$HVob987wKgh7Bic2PepClOyEeBMvWn6hhONZU3kiH1hrz7NsZLp0a', 'admin');
+(0, '11111', 'User', '$2y$10$NXLHd10m7uy13/zmmj1f8.DHnX8lMBwW4WQB29jPzPlhTf/0ViQOe', 'admin');
 
 -- --------------------------------------------------------
 
@@ -133,12 +142,20 @@ INSERT INTO `users` (`id`, `EmployeeID`, `Username`, `Password`, `role`) VALUES
 
 CREATE TABLE `vacation` (
   `VacationID` int(11) NOT NULL,
-  `EmployeeID` int(11) DEFAULT NULL,
+  `EmployeeID` varchar(50) DEFAULT NULL,
   `StartDate` date DEFAULT NULL,
   `NumberOfDays` int(11) DEFAULT NULL,
   `EndDate` date DEFAULT NULL,
   `VacationType` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `vacation`
+--
+
+INSERT INTO `vacation` (`VacationID`, `EmployeeID`, `StartDate`, `NumberOfDays`, `EndDate`, `VacationType`) VALUES
+(1, '11111', '2024-10-24', 1, '2024-10-25', 'Training'),
+(3, '55555', '2024-11-08', 2, '2024-11-10', 'Sports');
 
 --
 -- Indexes for dumped tables
@@ -169,13 +186,6 @@ ALTER TABLE `overtime`
   ADD PRIMARY KEY (`OvertimeID`);
 
 --
--- Indexes for table `users`
---
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `Username` (`Username`);
-
---
 -- Indexes for table `vacation`
 --
 ALTER TABLE `vacation`
@@ -189,37 +199,25 @@ ALTER TABLE `vacation`
 -- AUTO_INCREMENT for table `branch`
 --
 ALTER TABLE `branch`
-  MODIFY `BranchID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=124;
-
---
--- AUTO_INCREMENT for table `departments`
---
-ALTER TABLE `departments`
-  MODIFY `DepartmentID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=235;
+  MODIFY `BranchID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=233;
 
 --
 -- AUTO_INCREMENT for table `employees`
 --
 ALTER TABLE `employees`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 
 --
 -- AUTO_INCREMENT for table `overtime`
 --
 ALTER TABLE `overtime`
-  MODIFY `OvertimeID` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `users`
---
-ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `OvertimeID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `vacation`
 --
 ALTER TABLE `vacation`
-  MODIFY `VacationID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `VacationID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
