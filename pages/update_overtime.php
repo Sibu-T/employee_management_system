@@ -21,14 +21,40 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Execute the statement and check for success
     if ($stmt->execute()) {
-        $_SESSION['message'] = "Overtime updated successfully.";
+        sendSocketMessage("Overtime updated successfully"); // Notify via socket
     } else {
-        $_SESSION['error'] = "Error updating Overtime: " . $stmt->error; // Use $stmt->error for better error context
+        sendSocketMessage("Error updating overtime: " . $stmt->error); // Notify via socket
     }
 
     // Close the statement and redirect back to the Vacation page
     $stmt->close();
     header("Location: overtime.php");
+    exit();
+}
+
+// Function to send messages via socket
+function sendSocketMessage($message) {
+    $host = '127.0.0.1'; // Socket server address
+    $port = 80; // Socket server port
+    $socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
+
+    if ($socket === false) {
+        error_log("Socket creation failed: " . socket_strerror(socket_last_error()));
+        return false;
+    }
+
+    if (!socket_connect($socket, $host, $port)) {
+        error_log("Socket connection failed: " . socket_strerror(socket_last_error()));
+        socket_close($socket);
+        return false;
+    }
+
+    $notification = htmlspecialchars($message, ENT_QUOTES);
+    socket_write($socket, $notification, strlen($notification));
+    socket_close($socket);
+
+    // Redirect with message
+    header("Location: overtime.php?message=" . urlencode($message));
     exit();
 }
 ?>

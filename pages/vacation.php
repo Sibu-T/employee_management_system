@@ -15,6 +15,9 @@ $query = "SELECT v.VacationID, v.EmployeeID, v.NumberOfDays, v.StartDate, v.EndD
           LEFT JOIN Departments d ON e.DepartmentID = d.DepartmentID 
           LEFT JOIN Branch b ON e.BranchID = b.BranchID";
 $result = $conn->query($query);
+
+$message = isset($_GET['message']) ? htmlspecialchars($_GET['message']) : '';
+
 ?>
 
 <!DOCTYPE html>
@@ -49,18 +52,25 @@ $result = $conn->query($query);
 
     <div class="content" style="margin-left: 270px; padding: 20px;">
     
-        <h2 class="text-center">Vacation</h2>
-        <?php
+        <h2 class="text-center">Vacation</h2>       
+<?php
+// Check for session and socket messages and display them
 if (isset($_SESSION['message'])) {
-    echo '<div class="alert alert-success">' . $_SESSION['message'] . '</div>';
+    echo '<div class="alert alert-success">' . htmlspecialchars($_SESSION['message']) . '</div>';
     unset($_SESSION['message']); // Clear the message after displaying
 }
 
 if (isset($_SESSION['error'])) {
-    echo '<div class="alert alert-danger">' . $_SESSION['error'] . '</div>';
+    echo '<div class="alert alert-danger">' . htmlspecialchars($_SESSION['error']) . '</div>';
     unset($_SESSION['error']); // Clear the error after displaying
 }
 ?>
+<?php if (isset($message) && $message): ?>
+    <div class="alert alert-success"><?php echo htmlspecialchars($message); ?></div>
+    <?php unset($message); ?> <!-- Clear the message after displaying -->
+<?php endif; ?>
+
+
 
         <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#addVacationModal">Add Vacation</button>
         

@@ -30,19 +30,21 @@ if ($data) {
     $stmt->bind_param("ssssssii", $employeeId, $fullName, $gender, $phone, $nationality, $jobTitle, $departmentId, $branchId);
 
     // Execute the statement
-   // Success
-if ($stmt->execute()) {
-    // Set session message
-    $_SESSION['message'] = "Employee added successfully!";
-    // Respond with success status in JSON
-    echo json_encode(['status' => 'success']);
-} else {
-    // Set session error message
-    $_SESSION['error'] = "Error adding employee: " . $stmt->error;
-    // Respond with error status in JSON
-    echo json_encode(['status' => 'error']);
-}
-
+    if ($stmt->execute()) {
+        // Set session message
+        $_SESSION['message'] = "$fullName added successfully";
+        // Send success message via socket
+        sendSocketMessage("$fullName added successfully");
+        // Respond with success status in JSON
+        echo json_encode(['status' => 'success']);
+    } else {
+        // Set session error message
+        $_SESSION['error'] = "Error adding employee: " . $stmt->error;
+        // Send error message via socket
+        sendSocketMessage("Error adding employee '$fullName': " . $stmt->error);
+        // Respond with error status in JSON
+        echo json_encode(['status' => 'error']);
+    }
 
     // Close the statement and connection
     $stmt->close();
@@ -50,5 +52,27 @@ if ($stmt->execute()) {
 } else {
     // Respond with error if JSON data is not found
     echo json_encode(['status' => 'error', 'message' => 'Invalid input data.']);
+}
+
+// Function to send messages via socket
+function sendSocketMessage($message) {
+    $host = '127.0.0.1'; // Socket server address
+    $port = 80; // Socket server port
+    $socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
+
+    if ($socket === false) {
+        error_log("Socket creation failed: " . socket_strerror(socket_last_error()));
+        return false;
+    }
+
+    if (!socket_connect($socket, $host, $port)) {
+        error_log("Socket connection failed: " . socket_strerror(socket_last_error()));
+        socket_close($socket);
+        return false;
+    }
+
+    $notification = htmlspecialchars($message, ENT_QUOTES);
+    socket_write($socket, $notification, strlen($notification));
+    socket_close($socket);
 }
 ?>

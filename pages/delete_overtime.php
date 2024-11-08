@@ -17,24 +17,24 @@ if (isset($_GET['id'])) {
         if ($stmt->execute()) {
             if ($stmt->affected_rows > 0) {
                 echo json_encode(['status' => 'success']);
-                $_SESSION['message'] = 'Overtime deleted successfully.';
+                sendSocketMessage("Overtime deleted successfully"); // Notify via socket
             } else {
                 echo json_encode(['status' => 'error', 'message' => 'No overtime found with that ID.']);
-                $_SESSION['message'] = 'No overtime found with that ID.';
+                sendSocketMessage("No overtime found with that ID."); // Send notification
             }
         } else {
             echo json_encode(['status' => 'error', 'message' => 'Error deleting Overtime: ' . $stmt->error]);
-            $_SESSION['message'] = 'Error deleting overtime: ' . $stmt->error;
+            sendSocketMessage("Error deleting overtime: " . $stmt->error); // Notify via socket
         }
 
         $stmt->close();
     } else {
         echo json_encode(['status' => 'error', 'message' => 'Failed to prepare the SQL statement.']);
-        $_SESSION['message'] = 'Failed to prepare the SQL statement.';
+        sendSocketMessage("Failed to prepare the SQL statement."); // Send notification
     }
 } else {
     echo json_encode(['status' => 'error', 'message' => 'Invalid input data.']);
-    $_SESSION['message'] = 'Invalid input data.';
+    sendSocketMessage("Invalid input data."); // Send notification
 }
 
 $conn->close();
@@ -42,4 +42,30 @@ $conn->close();
 // Redirect to vacation.php
 header('Location: overtime.php');
 exit();
+
+// Function to send messages via socket
+function sendSocketMessage($message) {
+    $host = '127.0.0.1'; // Socket server address
+    $port = 80; // Socket server port
+    $socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
+
+    if ($socket === false) {
+        error_log("Socket creation failed: " . socket_strerror(socket_last_error()));
+        return false;
+    }
+
+    if (!socket_connect($socket, $host, $port)) {
+        error_log("Socket connection failed: " . socket_strerror(socket_last_error()));
+        socket_close($socket);
+        return false;
+    }
+
+    $notification = htmlspecialchars($message, ENT_QUOTES);
+    socket_write($socket, $notification, strlen($notification));
+    socket_close($socket);
+
+    // Redirect with message
+    header("Location: overtime.php?message=" . urlencode($message));
+    exit();
+}
 ?>

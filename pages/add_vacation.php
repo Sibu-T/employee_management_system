@@ -27,19 +27,17 @@ if ($data) {
     $stmt->bind_param("sisss", $employeeId, $numberOfDays, $startDate, $endDate, $vacationType);
 
     // Execute the statement
-   // Success
-if ($stmt->execute()) {
-    // Set session message
-    $_SESSION['message'] = "Vacation added successfully!";
-    // Respond with success status in JSON
-    echo json_encode(['status' => 'success']);
-} else {
-    // Set session error message
-    $_SESSION['error'] = "Error adding vacation: " . $stmt->error;
-    // Respond with error status in JSON
-    echo json_encode(['status' => 'error']);
-}
-
+    if ($stmt->execute()) {
+        // Set session message
+        $_SESSION['message'] = "Vacation added successfully";
+        // Respond with success status in JSON
+        echo json_encode(['status' => 'success']);
+    } else {
+        // Set session error message
+        $_SESSION['error'] = "Error adding vacation: " . $stmt->error;
+        // Respond with error status in JSON
+        echo json_encode(['status' => 'error']);
+    }
 
     // Close the statement and connection
     $stmt->close();
